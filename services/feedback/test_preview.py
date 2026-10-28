@@ -47,6 +47,13 @@ class SupportTests(unittest.TestCase):
  def test_invalid_fields(self):
   data=self.payload(self.challenge());data['consent']='no';self.assertEqual(self.submit(data).status_code,400)
   data=self.payload(self.challenge());data['contact_email']='student@example.com\r\nBcc: other@example.com';self.assertEqual(self.submit(data).status_code,400)
+ def test_core_details_required_for_every_category(self):
+  for index,category in enumerate(['contact_update','mfa','login','password','learning','other']):
+   self.headers['X-Real-IP']='198.18.1.'+str(index+10)
+   for field in ['name','student_id','mobile']:
+    data=self.payload(self.challenge());data.update(category=category,description='Synthetic issue description')
+    data[field]='   '
+    self.assertEqual(self.submit(data).status_code,400,(category,field))
  def test_image_processing(self):
   image=Image.new('RGB',(100,80),'white');output=io.BytesIO();metadata=PngImagePlugin.PngInfo();metadata.add_text('SensitiveMetadata','REMOVE ME');image.save(output,format='PNG',pnginfo=metadata)
   from werkzeug.datastructures import FileStorage

@@ -169,7 +169,11 @@ def preview():
         return error('验证码错误或已过期，请换一张重试。')
     def field(name, maximum, required=False):
         value = form.get(name,'').strip()
-        if len(value)>maximum or '\x00' in value or (required and not value):
+        if required and not value:
+            labels = {'name':'姓名', 'student_id':'外方学生 ID', 'mobile':'联系电话',
+                      'domestic_id':'国内学号', 'contact_email':'私人邮箱'}
+            raise ValueError('请填写'+labels.get(name, '必填信息')+'。')
+        if len(value)>maximum or '\x00' in value:
             raise ValueError('请完整填写表单，并检查输入长度。')
         return value
     try:
@@ -178,7 +182,7 @@ def preview():
         student_id = field('student_id',32,True)
         email = field('contact_email',180,True)
         category = field('category',30,True)
-        mobile = field('mobile',32,category in {'contact_update','mfa'})
+        mobile = field('mobile',32,True)
         description = field('description',1500)
         error_text = field('error',500)
         tried = field('tried',500)
