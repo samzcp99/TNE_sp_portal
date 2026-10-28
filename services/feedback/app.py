@@ -211,4 +211,4 @@ def preview():
         message=build_email(ticket,category=category,name=name,student_id=student_id,contact_email=email,mobile=mobile,reason=reason,error=error_text,tried=tried,domestic_id=domestic,occurred_at=occurred+' ('+zone+')',attachments=images)
     except (ValueError,KeyError) as exception:
         return error(str(exception))
-    return jsonify(mode='preview',reference=ticket,subject=str(message['Subject']),body=message.get_body(preferencelist=('plain',)).get_content(),attachments=[{'name':'screenshot-'+str(i+1)+'.png','size':len(item[0])} for i,item in enumerate(images)],message='预览已生成，未发送邮件。')
+    return jsonify(mode='preview',reference=ticket,cc=str(message['Cc']),subject=str(message['Subject']),body=message.get_body(preferencelist=('plain',)).get_content(),attachments=[{'name':'screenshot-'+str(i+1)+'.png','size':len(item[0])} for i,item in enumerate(images)],message='预览已生成，未发送邮件。')

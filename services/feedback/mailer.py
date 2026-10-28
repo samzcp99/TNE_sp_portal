@@ -1,13 +1,13 @@
 """Build short, forwardable support emails. This module does not send mail."""
 from email.message import EmailMessage
-from email.utils import formatdate, make_msgid
+from email.utils import formatdate, make_msgid, getaddresses
 import re
 import os
 
 SENDER = 'student@sp.samzhao.cloud'
 RECIPIENT = os.environ.get('SUPPORT_RECIPIENT', 'support-recipient@example.invalid')
 
-def build_email(ticket, *, category, name, student_id, contact_email, mobile='', reason='', error='', tried='', domestic_id='', occurred_at='', attachments=()):
+def build_email(ticket, *, category, name, student_id, contact_email, mobile='', reason='', error='', tried='', domestic_id='', occurred_at='', attachments=(), cc_student=True):
     for value in (ticket, category, name, student_id, contact_email, mobile):
         if '\r' in value or '\n' in value:
             raise ValueError('Unexpected newline in a single-line field')
@@ -34,6 +34,8 @@ def build_email(ticket, *, category, name, student_id, contact_email, mobile='',
     message = EmailMessage()
     message['From'] = f'Student Support <{SENDER}>'
     message['To'] = RECIPIENT
+    if cc_student:
+        message['Cc'] = contact_email
     message['Reply-To'] = contact_email
     message['Subject'] = f'{title} - {student_id} [{ticket}]'
     message['Date'] = formatdate(localtime=False)
@@ -48,6 +50,12 @@ def build_email(ticket, *, category, name, student_id, contact_email, mobile='',
             raise ValueError('Screenshot exceeds limit')
         message.add_attachment(content, maintype='image', subtype=subtype, filename=f'screenshot-{index}.{subtype}')
     return message
+
+
+def delivery_addresses(message):
+    """Include Cc in the SMTP envelope, not just in the visible headers."""
+    headers = message.get_all('To', []) + message.get_all('Cc', [])
+    return list(dict.fromkeys(address for _, address in getaddresses(headers) if address))
 
 if __name__ == '__main__':
     from pathlib import Path

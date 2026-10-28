@@ -6,7 +6,7 @@ marker=Path('/etc/student-feedback/test-sent')
 if marker.exists():
     print('Test already accepted by SMTP; no duplicate sent.')
     raise SystemExit(0)
-message=build_email('SP-DEMO-001',category='contact_update',name='Example Student (TEST ONLY)',student_id='EXAMPLE0001',contact_email='student@example.com',mobile='+86 1XXXXXXXXXX',reason='The previous mobile number is no longer available. This is a delivery test; please do not forward to Helpdesk.')
+message=build_email('SP-DEMO-001',category='contact_update',name='Example Student (TEST ONLY)',student_id='EXAMPLE0001',contact_email='student@example.com',mobile='+86 1XXXXXXXXXX',reason='The previous mobile number is no longer available. This is a delivery test; please do not forward to Helpdesk.',cc_student=False)
 message.replace_header('Subject','[TEST - NO ACTION REQUIRED] Student contact update - EXAMPLE0001')
 message.replace_header('To', config['recipient'])
 try:

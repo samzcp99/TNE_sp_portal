@@ -5,6 +5,7 @@ from PIL import Image,PngImagePlugin
 state=tempfile.TemporaryDirectory()
 os.environ['SUPPORT_STATE']=state.name
 from app import app,database,clean_image
+from mailer import build_email,delivery_addresses
 ORIGIN='https://sp.samzhao.cloud'
 class SupportTests(unittest.TestCase):
  def setUp(self):
@@ -24,6 +25,16 @@ class SupportTests(unittest.TestCase):
   identifier=self.challenge();data=self.payload(identifier);response=self.submit(data)
   self.assertEqual(response.status_code,200);result=response.get_json();self.assertEqual(result['mode'],'preview');self.assertIn('previous mobile number',result['body']);self.assertNotIn('sam.zhao',str(result));self.assertTrue(result['reference'].startswith('PREVIEW-'))
   self.assertEqual(self.submit(data).status_code,400)
+  self.assertEqual(result['cc'],'student@example.com')
+ def test_student_cc_envelope(self):
+  message=build_email('PREVIEW-TEST',category='login',name='Example',student_id='TEST0001',contact_email='student@example.com')
+  self.assertEqual(str(message['Cc']),'student@example.com')
+  self.assertEqual(str(message['Reply-To']),'student@example.com')
+  self.assertIn('student@example.com',delivery_addresses(message))
+  message.replace_header('To','student@example.com')
+  self.assertEqual(delivery_addresses(message),['student@example.com'])
+  test=build_email('PREVIEW-TEST',category='login',name='Example',student_id='TEST0001',contact_email='student@example.com',cc_student=False)
+  self.assertIsNone(test['Cc'])
  def test_wrong_and_expired(self):
   identifier=self.challenge();data=self.payload(identifier);data['captcha']='WRONG';self.assertEqual(self.submit(data).status_code,400)
   identifier=self.challenge()

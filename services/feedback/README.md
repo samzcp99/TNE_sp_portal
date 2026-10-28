@@ -27,3 +27,7 @@ Credentials are held only in /etc/student-feedback/config.json (root-only) and t
 ## Public repository
 
 This repository uses a placeholder recipient address. Production recipients are server-side configuration; set `SUPPORT_RECIPIENT` for standalone template generation, or read the private SMTP configuration and override the `To` header as demonstrated in test_delivery.py. Never commit real SMTP passwords, access keys, student records or screenshots. The SMTP test script is not a web endpoint and must only be run deliberately by the server administrator. The public support page remains preview-only and does not read the SMTP configuration or send mail.
+
+## Student CC
+
+Normal support messages include the validated student contact email in Cc and Reply-To. Use `delivery_addresses(message)` when sending so that Cc is included in the SMTP envelope; adding only a Cc header does not deliver the copy. The privacy notice explicitly covers the student receiving the same body and screenshots. The preview response shows the Cc address but still never sends mail. Synthetic transport tests explicitly set `cc_student=False` and send only to the configured work recipient, not example.com.
