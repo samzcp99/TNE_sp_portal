@@ -12,7 +12,7 @@ class Page(HTMLParser):
         if tag in ('script','style'):self.skip=max(0,self.skip-1)
     def handle_data(self,data):
         if not self.skip:self.parts.append(data)
-for path in ['/','/tools/','/accounts_info.html','/about.html','/tools/pswd/']:
+for path in ['/','/tools/','/account/','/about/','/tools/pswd/']:
     with urlopen('https://47.95.144.1'+path,timeout=15) as r:
         p=Page();p.feed(r.read().decode('utf-8-sig'))
         assert r.status==200

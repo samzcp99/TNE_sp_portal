@@ -27,7 +27,7 @@ fake={'school':'hue','student_id':'999999999999','surname':'\u6d4b'}
 for i in range(6): assert call(fake)[0]==404
 assert call(fake)[0]==429,'Per-student throttle missing'
 print('PASS: exact match returns only SIT ID; wrong surname/unknown ID share a failure; malformed input and foreign-origin requests rejected; persistent student throttle works.')
-with urlopen('https://sit.samzhao.cloud/accounts_info.html') as r:
+with urlopen('https://sit.samzhao.cloud/account/') as r:
     page=r.read().decode('utf-8-sig')
     assert r.status==200
     assert 'no-store' in r.headers['Cache-Control']

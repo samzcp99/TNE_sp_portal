@@ -1,6 +1,6 @@
 # Current status: OPEN (2026-10-28)
 
-Re-enabled at the user's explicit request. Public URL: https://47.95.144.1/accounts_info.html. The service is enabled at boot, and the IP virtual host proxies the lookup API. Origin validation accepts the IP HTTPS origin. Existing exact-match and throttle protections remain. Current synthetic verification is verify_open.py; historical pause details below are superseded by this status.
+Re-enabled at the user's explicit request. Public URL: https://47.95.144.1/account/. The service is enabled at boot, and the IP virtual host proxies the lookup API. Origin validation accepts the IP HTTPS origin. Existing exact-match and throttle protections remain. Current synthetic verification is verify_open.py; historical pause details below are superseded by this status.
 
 # Current status: PAUSED (2026-10-28)
 
@@ -8,7 +8,7 @@ Public lookup is disabled while institutional authorization and data use arrange
 
 # Student account lookup
 
-Public form: https://sit.samzhao.cloud/accounts_info.html (also linked from /tools/).
+Public form: https://sit.samzhao.cloud/account/ (also linked from /tools/).
 
 Runtime: Python 3 standard library, systemd `sit-account-lookup`, loopback 127.0.0.1:8765. Nginx exposes only POST /api/account-lookup over existing HTTPS. No new public ports.
 

@@ -9,14 +9,14 @@ class Page(HTMLParser):
   if tag=='input':self.inputs.append(a)
  def handle_endtag(self,tag):
   if tag=='nav':self.nav=False
-for path in ['/','/tools/','/accounts_info.html','/about.html','/tools/pswd/']:
+for path in ['/','/tools/','/account/','/about/','/tools/pswd/']:
  with urlopen('https://47.95.144.1'+path,timeout=15) as r:
   html=r.read().decode('utf-8-sig');assert r.status==200;p=Page();p.feed(html)
-  assert {a.get('href') for a in p.links}=={'/','/tools/','/accounts_info.html','/about.html'},path
+  assert {a.get('href') for a in p.links}=={'/','/tools/','/account/','/about/'},path
   assert len([a for a in p.links if 'aria-current' in a])==1,path
   assert 'SP<span' not in html and 'brand-mark' not in html,path
   assert '\u5b66\u4e60\u5c0f\u7ad9' in html,path
-  if path=='/accounts_info.html':
+  if path=='/account/':
    student=next(a for a in p.inputs if a.get('name')=='student_id');assert student['inputmode']=='numeric' and student['enterkeyhint']=='next'
    assert len([a for a in p.inputs if a.get('type')!='hidden'])==2
   print('PASS',path,'navigation, neutral word brand, HTTPS')

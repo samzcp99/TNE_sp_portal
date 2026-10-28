@@ -2,7 +2,7 @@ import re
 from urllib.request import urlopen,Request
 from urllib.error import HTTPError
 base='https://47.95.144.1'
-for path in ['/','/tools/','/accounts_info.html','/about.html','/tools/pswd/','/tools/pswd/sitemap-0.xml','/tools/pswd/sitemap-index.xml','/tools/pswd/robots.txt']:
+for path in ['/','/tools/','/account/','/about/','/tools/pswd/','/tools/pswd/sitemap-0.xml','/tools/pswd/sitemap-index.xml','/tools/pswd/robots.txt']:
     with urlopen(base+path,timeout=15) as r:
         text=r.read().decode('utf-8-sig')
         assert r.status==200 and r.url==base+path,(path,r.status,r.url)

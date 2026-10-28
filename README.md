@@ -37,3 +37,9 @@ python3 test_preview.py
 The preview is intended for review with fictional data. Production delivery and retry/receipt handling remain a separate future change. A self-hosted image CAPTCHA limits simple automation; it is not a strong identity check or protection against advanced OCR/bots.
 
 Git tags: `v0.1-site-archive` preserves the pre-preview website; `v0.2-support-preview` preserves this preview. The local Git repository is connected to `origin` at https://github.com/samzcp99/TNE_sp_portal. Local ZIP snapshots are under `archives/` and exclude secrets and student records.
+
+## Clean public URLs
+
+Account lookup: `/account/`; support: `/support/`; tools: `/tools/`; privacy/about: `/about/`. All pages use directory indexes internally. Legacy `.html` requests receive 301 redirects preserving query parameters, and internal links use only clean paths. Local source files are now `HUE/account/index.html`, `HUE/about/index.html`, `HUE/snake/index.html` and `HUE/mahjong/index.html`.
+
+Deploy `deploy/clean-pages.conf` into `/etc/nginx/conf.d/` before loading the shared locations snippet; it defines the map used by the redirect guard. Matching the original request URI avoids redirect loops from Nginx's internal index.html handling. Account no-store/noindex/CSP headers apply to the whole `/account/` prefix. Test with `deploy/verify-clean-urls.py`.

@@ -1,6 +1,6 @@
 import http.cookiejar,json,urllib.request,urllib.error
 base='https://sp.samzhao.cloud'
-for path in ['/','/support/','/css/support.css','/js/support.js','/accounts_info.html','/tools/pswd/']:
+for path in ['/','/support/','/css/support.css','/js/support.js','/account/','/tools/pswd/']:
  with urllib.request.urlopen(base+path,timeout=15) as r:
   text=r.read().decode('utf-8-sig');assert r.status==200
   if path=='/':assert 'href="/support/"' in text

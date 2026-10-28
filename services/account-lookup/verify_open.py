@@ -23,10 +23,10 @@ with tempfile.TemporaryDirectory() as temporary:
     assert post(base,payload)[0]==429
     server.shutdown();module.DB.close()
 print('PASS synthetic exact match, wrong surname, and persistent rate limiting')
-for path in ['/accounts_info.html','/tools/','/about.html','/js/account-lookup.js']:
+for path in ['/account/','/tools/','/about/','/js/account-lookup.js']:
     with urlopen('https://47.95.144.1'+path,timeout=15) as r:
         text=r.read().decode('utf-8-sig');assert r.status==200
-        if path=='/accounts_info.html':assert 'id="lookup-form"' in text and 'no-store' in r.headers['Cache-Control'] and 'const DATA' not in text
+        if path=='/account/':assert 'id="lookup-form"' in text and 'no-store' in r.headers['Cache-Control'] and 'const DATA' not in text
 print('PASS public HTTPS form, script and privacy headers')
 assert post('https://47.95.144.1',{'school':'hue','student_id':'000000000000','surname':'\u6d4b'})[0]==404
 print('PASS public IP API accepts requests and returns generic mismatch for synthetic unknown ID')
