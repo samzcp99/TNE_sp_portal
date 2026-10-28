@@ -1,0 +1,24 @@
+[Unit]
+Description=Student support preview and self-hosted CAPTCHA
+After=network.target
+
+[Service]
+User=support-preview
+Group=support-preview
+WorkingDirectory=/opt/student-feedback-preview
+ExecStart=/usr/bin/gunicorn --bind 127.0.0.1:8766 --workers 1 --threads 2 --timeout 30 --access-logfile /dev/null app:app
+Restart=on-failure
+RestartSec=3
+StateDirectory=student-feedback-preview
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/student-feedback-preview
+MemoryMax=384M
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target

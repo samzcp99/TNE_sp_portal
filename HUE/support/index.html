@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="手机端账户问题反馈试用页：填写信息、上传截图、完成人工验证并预览英文邮件。">
+  <meta name="theme-color" content="#4b2e22">
+  <title>账号问题反馈（试用版） | 学习小站</title>
+  <link rel="stylesheet" href="/vendor/tabler/tabler.min.css">
+  <link rel="stylesheet" href="/css/portal.css?v=20261028-walnut-2">
+<link rel="stylesheet" href="/css/support.css?v=20261028-preview-1"><meta name="robots" content="noindex, nofollow"></head>
+<body class="support-body">
+  <a class="skip-link" href="#services">跳转至学生服务</a>
+  <div class="utility-bar"><div class="container-xl utility-inner"><span>PERSONAL STUDENT RESOURCE GUIDE</span><span>个人整理 · 非官方</span></div></div>
+  <header class="portal-header">
+    <div class="container-xl header-inner">
+      <a class="brand word-brand" href="/" aria-label="学习小站首页"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 4h12v17l-6-4-6 4V4Z"/><path d="M9 8h6"/></svg></span><span><strong>学习小站</strong><small>让学习中的小事，更简单</small></span></a>
+      <nav class="site-nav" aria-label="主导航"><a href="/">首页</a><a href="/tools/">工具箱</a><a href="/accounts_info.html">查账号</a><a href="/about.html">关于</a></nav>
+    </div>
+  </header>
+  <aside class="site-notice" aria-label="网站性质说明"><div class="container-xl"><strong>非官方学习辅助工具</strong><span> · 院校事务以官方平台为准。</span><a href="/about.html">使用与隐私说明 ↗</a></div></aside>
+  <main id="services"><section class="services-section toolbox-page support-page"><div class="container-xl support-container">
+    <a class="toolbox-back" href="/">← 返回首页</a><p class="eyebrow">ACCOUNT SUPPORT</p><h1>账号遇到问题？</h1><p class="hero-description">把问题一次说清楚，减少来回沟通。</p>
+    <div class="preview-notice"><strong>试用预览版</strong><span>可以体验填写、上传和验证码。提交后只生成邮件预览，不发送邮件。请先使用虚构信息测试。</span></div>
+    <form id="support-form" class="support-form" enctype="multipart/form-data" autocomplete="off">
+      <section class="card service-card"><div class="card-body"><h2><span class="step-number">1</span> 遇到了什么问题</h2>
+      <label class="form-label" for="category">问题类型</label><select id="category" name="category" class="form-select" required><option value="contact_update">更新邮箱／手机号</option><option value="mfa">旧手机号停用／无法验证身份</option><option value="login">无法登录账户</option><option value="password">密码重置失败</option><option value="learning">学习平台问题</option><option value="other">其他账户问题</option></select>
+      <label class="form-label" for="reason">主要原因</label><select id="reason" name="reason" class="form-select"><option value="old_phone">原手机号已经停用</option><option value="new_contact">需要更新联系方式</option><option value="lost_device">无法使用原验证设备</option><option value="code_failed">无法接收或使用验证码</option><option value="other">其他原因（请在下面描述）</option></select>
+      </div></section>
+      <section class="card service-card"><div class="card-body"><h2><span class="step-number">2</span> 学生信息</h2>
+      <div class="support-field-grid"><div><label class="form-label" for="student-name">姓名</label><input id="student-name" name="name" class="form-control" maxlength="80" placeholder="英文姓名或拼音更方便处理" required></div><div><label class="form-label" for="domestic-id">国内学号</label><input id="domestic-id" name="domestic_id" class="form-control" inputmode="numeric" pattern="[0-9]{6,24}" maxlength="24" enterkeyhint="next" required></div></div>
+      <label class="form-label" for="external-id">外方学生 ID <a href="/accounts_info.html" target="_blank" rel="noopener noreferrer">不知道 ID？查询 ↗</a></label><input id="external-id" name="student_id" class="form-control" pattern="[A-Za-z0-9-]{3,32}" maxlength="32" inputmode="numeric" required>
+      <label class="form-label" for="contact-email">当前可以联系你的邮箱</label><input id="contact-email" name="contact_email" type="email" inputmode="email" class="form-control" maxlength="180" autocapitalize="off" spellcheck="false" required><small class="form-hint" id="email-hint">如需更新邮箱，请填写希望使用的新邮箱。</small>
+      <label class="form-label" for="mobile">联系电话 <span id="phone-required">（必填）</span></label><input id="mobile" name="mobile" type="tel" inputmode="tel" class="form-control" maxlength="32" placeholder="带国家区号，例如 +86 …" required>
+      </div></section>
+      <section class="card service-card"><div class="card-body"><h2><span class="step-number">3</span> 补充问题与截图</h2>
+      <label class="form-label" for="occurred-at">问题发生时间</label><input id="occurred-at" name="occurred_at" type="datetime-local" class="form-control" required><input id="timezone" name="timezone" type="hidden"><small class="form-hint" id="timezone-label"></small>
+      <label class="form-label" for="description">问题描述 <span id="description-required">（选填）</span></label><textarea id="description" name="description" rows="3" class="form-control" maxlength="1500" placeholder="发生了什么？如方便，可使用简短英文。"></textarea>
+      <details class="extra-details"><summary>补充报错和已尝试的操作（选填）</summary><label class="form-label" for="error">具体报错</label><textarea id="error" name="error" class="form-control" rows="2" maxlength="500"></textarea><label class="form-label" for="tried">已经尝试的操作</label><textarea id="tried" name="tried" class="form-control" rows="2" maxlength="500"></textarea></details>
+      <label class="form-label" for="screenshots">问题截图（选填）</label><div class="upload-area"><input id="screenshots" type="file" accept="image/jpeg,image/png,image/webp" multiple><span>最多 3 张，每张不超过 3 MB · JPG / PNG / WebP</span></div><div id="image-previews" class="image-previews"></div>
+      <p class="privacy-warning">请先遮住截图中的密码、验证码、恢复码和无关个人信息。图片会在服务器端校验并移除元数据，不公开下载。</p>
+      </div></section>
+      <section class="card service-card"><div class="card-body"><h2><span class="step-number">4</span> 验证并生成预览</h2><label class="form-label" for="captcha">输入图中的字符，不区分大小写</label><div class="captcha-row"><button id="captcha-refresh" type="button" class="captcha-image-button" aria-label="刷新验证码"><img id="captcha-image" alt="验证码图片，点击换一张"></button><input id="captcha" name="captcha" class="form-control" maxlength="5" minlength="5" pattern="[A-Za-z0-9]{5}" autocapitalize="characters" spellcheck="false" autocomplete="off" enterkeyhint="go" placeholder="5 位字符" required></div><button id="captcha-reload" type="button" class="captcha-reload">看不清？换一张</button><p class="form-hint">验证码 2 分钟内有效，提交一次后失效。</p>
+      <label class="consent"><input name="consent" type="checkbox" value="yes" required><span>我已阅读<a href="/about.html" target="_blank" rel="noopener noreferrer">隐私说明</a>。正式使用时仅提交本人信息，并同意由本站支持联系人接收、按需要转交外方院校 Helpdesk。本试用版仅生成预览。</span></label>
+      <div class="honeypot" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <button id="support-submit" class="btn portal-button w-100" type="submit">验证并预览邮件 <span aria-hidden="true">→</span></button><p id="support-status" role="status" aria-live="polite" class="lookup-status"></p>
+      </div></section>
+    </form>
+    <section id="email-preview" class="card service-card email-preview" hidden tabindex="-1"><div class="card-body"><p class="eyebrow">EMAIL PREVIEW · NOT SENT</p><h2>这是将整理出的邮件</h2><p class="preview-reference" id="preview-reference"></p><label class="form-label">邮件标题</label><p id="preview-subject" class="preview-subject"></p><label class="form-label">英文正文</label><pre id="preview-body"></pre><p id="preview-attachments" class="form-hint"></p><div class="lookup-actions"><button id="preview-copy" type="button" class="btn btn-outline-secondary">复制正文</button><button id="preview-hide" type="button" class="btn btn-outline-secondary">隐藏预览</button></div><p class="form-hint">邮件未发送。请检查格式是否方便直接转发；预览内容离开页面后不会保留。</p></div></section>
+  </div></section></main>
+  <script src="/js/support.js?v=20261028-preview-1" defer></script>
+  <footer class="portal-footer"><div class="container-xl footer-inner"><div><span class="footer-title">学习小站</span><p>连接院校 · 连接学习 · 连接未来</p></div><div class="footer-meta"><span>个人维护 · 非官方学习导航</span><span>本站不代表任何院校提供服务承诺、学籍认定或账户管理。</span><a href="/about.html">网站与隐私说明</a></div></div></footer>
+</body>
+</html>
