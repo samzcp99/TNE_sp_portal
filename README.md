@@ -1,4 +1,4 @@
-﻿# Learning site
+# Learning site
 
 A mobile-oriented learning resource site and private server-side account lookup.
 
@@ -10,7 +10,7 @@ A mobile-oriented learning resource site and private server-side account lookup.
 
 Live site: https://sp.samzhao.cloud/ (direct IP HTTPS remains available).
 
-Secrets, SSH keys, SMTP credentials, student records and runtime databases are excluded from Git. The repository contains no usable student dataset; account lookup requires a separately provisioned private dataset and key on the server. No Git remote is configured by default.
+Secrets, SSH keys, SMTP credentials, student records and runtime databases are excluded from Git. The repository contains no usable student dataset; account lookup requires a separately provisioned private dataset and key on the server. GitHub repository: https://github.com/samzcp99/TNE_sp_portal.
 
 Source and configuration files are documentation of the deployment. Do not upload the whole repository into the web root: only `HUE/` is public. Private service state stays under `/var/lib/` and secrets under `/etc/`.
 
@@ -32,4 +32,4 @@ python3 test_preview.py
 
 The preview is intended for review with fictional data. Production delivery and retry/receipt handling remain a separate future change. A self-hosted image CAPTCHA limits simple automation; it is not a strong identity check or protection against advanced OCR/bots.
 
-Git tags: `v0.1-site-archive` preserves the pre-preview website; `v0.2-support-preview` preserves this preview. The Git repository is local only, with no remote configured. Local ZIP snapshots are under `archives/` and exclude secrets and student records.
+Git tags: `v0.1-site-archive` preserves the pre-preview website; `v0.2-support-preview` preserves this preview. The local Git repository is connected to `origin` at https://github.com/samzcp99/TNE_sp_portal. Local ZIP snapshots are under `archives/` and exclude secrets and student records.

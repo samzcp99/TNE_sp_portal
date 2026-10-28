@@ -2,9 +2,10 @@
 from email.message import EmailMessage
 from email.utils import formatdate, make_msgid
 import re
+import os
 
 SENDER = 'student@sp.samzhao.cloud'
-RECIPIENT = 'support-recipient@example.invalid'
+RECIPIENT = os.environ.get('SUPPORT_RECIPIENT', 'support-recipient@example.invalid')
 
 def build_email(ticket, *, category, name, student_id, contact_email, mobile='', reason='', error='', tried='', domestic_id='', occurred_at='', attachments=()):
     for value in (ticket, category, name, student_id, contact_email, mobile):

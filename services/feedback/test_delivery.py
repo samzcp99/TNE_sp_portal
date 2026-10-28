@@ -8,6 +8,7 @@ if marker.exists():
     raise SystemExit(0)
 message=build_email('SP-DEMO-001',category='contact_update',name='Example Student (TEST ONLY)',student_id='EXAMPLE0001',contact_email='student@example.com',mobile='+86 1XXXXXXXXXX',reason='The previous mobile number is no longer available. This is a delivery test; please do not forward to Helpdesk.')
 message.replace_header('Subject','[TEST - NO ACTION REQUIRED] Student contact update - EXAMPLE0001')
+message.replace_header('To', config['recipient'])
 try:
     with smtplib.SMTP_SSL(config['host'],config['port'],timeout=20,context=ssl.create_default_context()) as smtp:
         smtp.login(config['username'],config['password'])
