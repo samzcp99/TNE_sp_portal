@@ -1,0 +1,71 @@
+/* inter-regular - latin */
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  src: url('/tools/pswd/fonts/inter-v13-latin-regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* inter-500 - latin */
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  src: url('/tools/pswd/fonts/inter-v13-latin-500.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* space-mono-regular - latin */
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/tools/pswd/fonts/space-mono-v13-latin-regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* space-mono-700 - latin */
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/tools/pswd/fonts/space-mono-v13-latin-700.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* bebas-neue-regular - latin */
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/tools/pswd/fonts/bebas-neue-v14-latin-regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* inter-tight-500 - latin */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/tools/pswd/fonts/inter-tight-v7-latin-500.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* inter-tight-600 - latin */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/tools/pswd/fonts/inter-tight-v7-latin-600.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* inter-tight-700 - latin */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/tools/pswd/fonts/inter-tight-v7-latin-700.woff2') format('woff2');
+  font-display: swap;
+}

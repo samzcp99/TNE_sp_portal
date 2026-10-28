@@ -1,0 +1,125 @@
+<div class="matrix">
+  <canvas id="canvas"></canvas>
+  <div class="overlay"></div>
+</div>
+
+<script is:inline>
+  var canvas = document.getElementById('canvas'),
+    ctx = canvas.getContext('2d'),
+    charArr = 'abcdefghijklmnopqrstuvwxyz'.split(''),
+    fallingCharArr = [],
+    fontSize = 14,
+    cw,
+    ch,
+    maxColumns,
+    prevWidth;
+
+  function resizeCanvas() {
+    var matrix = document.querySelector('.matrix');
+    cw = matrix.clientWidth;
+    ch = matrix.clientHeight;
+
+    if (cw !== prevWidth) {
+      prevWidth = cw;
+      maxColumns = Math.floor(cw / fontSize);
+
+      canvas.width = cw;
+      canvas.height = ch;
+
+      ctx.fillStyle = 'rgb(9, 9, 11)';
+      ctx.fillRect(0, 0, cw, ch);
+
+      fallingCharArr = [];
+      for (var i = 0; i < maxColumns; i++) {
+        fallingCharArr.push(new Point(i * fontSize, randomFloat(-500, 0)));
+      }
+    }
+  }
+
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  function randomFloat(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function Point(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  Point.prototype.draw = function () {
+    this.value = charArr[randomInt(0, charArr.length)].toUpperCase();
+    this.speed = randomFloat(0.5, 2);
+
+    ctx.fillStyle = '#FFF';
+    ctx.font = fontSize + 'px sans-serif';
+    ctx.fillText(this.value, this.x, this.y);
+
+    this.y += this.speed;
+    if (this.y > ch) {
+      this.y = randomFloat(-100, 0);
+      this.speed = randomFloat(2, 5);
+    }
+  };
+
+  function update() {
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillStyle = 'rgba(0,0,0,0.05)';
+    ctx.fillRect(0, 0, cw, ch);
+    ctx.restore();
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = '#09090B';
+    ctx.fillRect(0, 0, cw, ch);
+    ctx.restore();
+
+    fallingCharArr.forEach(p => p.draw());
+
+    requestAnimationFrame(update);
+  }
+
+  var matrix = document.querySelector('.matrix');
+  var resizeObserver = new ResizeObserver(() => resizeCanvas());
+  resizeObserver.observe(matrix);
+
+  update();
+</script>
+
+<style>
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+  }
+
+  .matrix {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      rgb(9 9 11 / 80%),
+      rgb(9 9 11 / 80%),
+      var(--color-neutral-50),
+      var(--color-neutral-50),
+      var(--color-neutral-50)
+    );
+    backdrop-filter: grayscale(100%);
+  }
+</style>

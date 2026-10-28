@@ -1,0 +1,51 @@
+---
+import '@/styles/global.css';
+
+interface Props {
+  description?: string;
+  og?: string;
+  title?: string;
+}
+
+const title = Astro.props.title
+  ? `${Astro.props.title} — PSWD`
+  : 'PSWD 密码生成器 | 工具箱';
+
+const description =
+  Astro.props.description || '在浏览器中生成新密码，然后前往 院校官方页面完成密码重置。';
+
+const og = Astro.props.og || '/og.png';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width" name="viewport" />
+    <link href="/tools/pswd/favicon.svg" rel="icon" type="image/svg+xml" />
+    <meta content={Astro.generator} name="generator" />
+    <meta content="#211b17" name="theme-color" />
+
+    <title>{title}</title>
+    <meta content={title} name="title" />
+    <meta content={description} name="description" />
+
+    <meta content={title} property="og:title" />
+    <meta content={description} property="og:description" />
+    <meta content="PSWD" property="og:site_name" />
+    <meta content="https://sp.samzhao.cloud/tools/pswd/" property="og:url" />
+    <meta content="website" property="og:type" />
+    <meta content={`https://sp.samzhao.cloud/tools/pswd${og}`} property="og:image" />
+
+    <link href="/tools/pswd/sitemap-index.xml" rel="sitemap" />
+  <link rel="stylesheet" href="/css/pswd-theme.css?v=20261028-walnut-2"></head>
+  <body><nav class="generator-main-nav" aria-label="主导航"><a class="generator-brand" href="/">学习小站</a><div><a href="/">首页</a><a href="/tools/" aria-current="location">工具箱</a><a href="/accounts_info.html">查账号</a><a href="/about.html">关于</a></div></nav>
+<aside style="position:relative;z-index:2;background:#4b2e1d;padding:14px 24px;color:#ecd0aa;font:13px/1.8 Arial,sans-serif">个人维护 · 非官方工具。本工具并非 院校授权服务，不会修改账户密码。<a href="/about.html" style="color:inherit;text-decoration:underline">网站与隐私说明 →</a></aside>
+    <nav aria-label="工具箱导航" style="position:relative;z-index:2;padding:18px 24px;border-bottom:1px solid #ffffff20;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font:14px/1.6 Arial,sans-serif;color:#d4d4d8">
+      <a href="/tools/" style="color:inherit;text-decoration:none">← 工具箱</a>
+      <a href="https://reset.sit.ac.nz" target="_blank" rel="noopener noreferrer" style="color:#dfaa6d">生成后，前往 官方密码重置 ↗</a>
+      <p style="width:100%;margin:0;font-size:12px;color:#a1a1aa">密码在当前浏览器内生成，不会发送至服务器。本工具不会修改你的 学生账户密码。</p>
+    </nav>
+    <slot />
+  </body>
+</html>

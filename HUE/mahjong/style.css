@@ -1,0 +1,75 @@
+#game {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  #wall {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  #player-hand {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  
+  .mahjong-tile {
+    width: 70px;
+    height: 100px;
+    margin: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    text-align: center;
+    font-size: 20px;
+    font-family: '楷体', 'Arial', sans-serif;
+    line-height: 80px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    background-size: 100%;
+    background-position: center;
+  }
+  
+  .mahjong-tile:hover {
+    transform: scale(1.05);
+  }
+  
+  .active {
+    border: 2px solid #007bff;
+  }
+  
+  .arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid red;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  #last-drawn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  #last-drawn-tile .mahjong-tile {
+    margin: 0;
+    transform: scale(1.1);
+  }
+  

@@ -1,0 +1,33 @@
+:root {
+  --color-neutral-50: #09090b;
+  --color-neutral-100: #18181b;
+  --color-neutral-200: #27272a;
+  --color-neutral-300: #3f3f46;
+  --color-neutral-400: #52525b;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #a1a1aa;
+  --color-neutral-700: #d4d4d8;
+  --color-neutral-800: #e4e4e7;
+  --color-neutral-900: #f4f4f5;
+  --color-neutral-950: #fafafa;
+
+  /* NEW */
+  --color-neutral-1: #000;
+  --color-neutral-2: #121212;
+  --color-neutral-3: #1f1f1f;
+  --color-neutral-4: #282828;
+  --color-neutral-5: #303030;
+  --color-neutral-6: #3a3a3a;
+  --color-neutral-7: #474747;
+  --color-neutral-8: #606060;
+  --color-neutral-9: #6d6d6d;
+  --color-neutral-10: #7a7a7a;
+  --color-neutral-11: #b3b3b3;
+  --color-neutral-12: #eee;
+  --color-accent: #fff;
+
+  /* Foreground */
+  --color-foreground: #eee;
+  --color-foreground-subtle: #b3b3b3;
+  --color-foreground-subtler: #7a7a7a;
+}

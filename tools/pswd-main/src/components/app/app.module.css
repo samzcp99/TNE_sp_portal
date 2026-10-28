@@ -1,0 +1,17 @@
+.generator {
+  position: relative;
+}
+
+.donate {
+  margin-top: 40px;
+  font-size: var(--font-xsm);
+  color: var(--color-foreground-subtle);
+  text-align: center;
+}
+
+.donate a {
+  font-weight: 500;
+  color: var(--color-foreground);
+  text-decoration-style: dotted;
+  text-decoration-color: var(--color-foreground-subtler);
+}

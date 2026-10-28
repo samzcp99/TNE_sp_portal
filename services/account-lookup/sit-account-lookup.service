@@ -1,0 +1,24 @@
+[Unit]
+Description=SIT private student account lookup
+After=network.target
+
+[Service]
+User=sit-lookup
+Group=sit-lookup
+WorkingDirectory=/opt/sit-account-lookup
+ExecStart=/usr/bin/python3 /opt/sit-account-lookup/server.py
+Restart=on-failure
+RestartSec=3
+StateDirectory=sit-account-lookup
+StateDirectoryMode=0750
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/sit-account-lookup
+MemoryMax=128M
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target
