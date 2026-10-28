@@ -1,11 +1,12 @@
 [Unit]
-Description=Student support preview and self-hosted CAPTCHA
+Description=Student support form and self-hosted CAPTCHA
 After=network.target
 
 [Service]
 User=support-preview
 Group=support-preview
 WorkingDirectory=/opt/student-feedback-preview
+Environment=SUPPORT_DELIVERY_ENABLED=1
 ExecStart=/usr/bin/gunicorn --bind 127.0.0.1:8766 --workers 1 --threads 2 --timeout 30 --access-logfile /dev/null app:app
 Restart=on-failure
 RestartSec=3

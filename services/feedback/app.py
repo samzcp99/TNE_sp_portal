@@ -1,4 +1,4 @@
-"""Preview-only support form: self-hosted CAPTCHA, image validation, no delivery."""
+"""Support form with CAPTCHA, validated images, private outbox and preview route."""
 import base64
 import hashlib
 import hmac
@@ -19,6 +19,7 @@ from flask import Flask, jsonify, request, session
 from PIL import Image, ImageDraw, ImageFont, ImageOps, UnidentifiedImageError
 from mailer import build_email
 from contact_validation import normalize_mobile, normalize_email
+import outbox
 
 STATE = Path(os.environ.get('SUPPORT_STATE', '/var/lib/student-feedback-preview'))
 STATE.mkdir(parents=True, exist_ok=True)
@@ -32,6 +33,7 @@ app = Flask(__name__)
 app.config.update(SECRET_KEY=KEY, MAX_CONTENT_LENGTH=10 * 1024 * 1024,
                   SESSION_COOKIE_NAME='support_session', SESSION_COOKIE_SECURE=True,
                   SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE='Strict')
+app.config['DELIVERY_ENABLED']=os.environ.get('SUPPORT_DELIVERY_ENABLED')=='1'
 Image.MAX_IMAGE_PIXELS = 8_000_000
 ALLOWED_ORIGINS = {'https://sp.samzhao.cloud', 'https://47.95.144.1'}
 CATEGORIES = {'contact_update', 'mfa', 'login', 'password', 'learning', 'other'}
@@ -157,13 +159,35 @@ def clean_image(upload):
     return output.getvalue(), 'png'
 
 
+@app.get('/api/support/status/<token>')
+def delivery_status(token):
+    if not re.fullmatch(r'[A-Za-z0-9_-]{40,60}',token) or 'sid' not in session:
+        return error('未找到此反馈状态。',404)
+    result=outbox.status(token,digest(session['sid']))
+    return jsonify(result) if result else error('未找到此反馈状态。',404)
+
+
 @app.post('/api/support/preview')
+@app.post('/api/support/submit')
 def preview():
     if request.headers.get('Origin') not in ALLOWED_ORIGINS:
         return error('请从本站反馈页面提交。', 403)
+    live=request.path.endswith('/submit')
+    if live and not app.config['DELIVERY_ENABLED']:
+        return error('正式提交尚未启用，请稍后重试。',503)
+    form = request.form
+    request_key=''
+    owner=digest(session.get('sid',''))
+    if live:
+        submission_id=form.get('submission_id','')
+        if not re.fullmatch(r'[0-9a-f-]{36}',submission_id):
+            return error('提交标识无效，请刷新页面后重试。')
+        request_key=digest(owner+'\0'+submission_id)
+        existing=outbox.find(request_key,owner)
+        if existing:
+            return jsonify(existing),202
     if not throttle('submit', 10, 600):
         return error('尝试次数过多，请十分钟后重试。', 429)
-    form = request.form
     if form.get('website'):
         return error('请求无效。')
     if not consume_captcha(form.get('captcha_id','')[:100], form.get('captcha','')[:10]):
@@ -210,8 +234,11 @@ def preview():
         if len(uploads)>3:
             raise ValueError('最多上传三张截图。')
         images = [clean_image(item) for item in uploads]
-        ticket='PREVIEW-'+datetime.now(timezone.utc).strftime('%Y%m%d')+'-'+secrets.token_hex(3).upper()
+        ticket=('SP-' if live else 'PREVIEW-')+datetime.now(timezone.utc).strftime('%Y%m%d')+'-'+secrets.token_hex(4).upper()
         message=build_email(ticket,category=category,name=name,student_id=student_id,contact_email=email,mobile=mobile,reason=reason,error=error_text,tried=tried,domestic_id=domestic,occurred_at=occurred+' ('+zone+')',attachments=images)
+        if live:
+            result=outbox.enqueue(message,request_key,owner,digest(student_id),digest(request.headers.get('X-Real-IP',request.remote_addr or '')),ticket)
+            return jsonify(result),202
     except (ValueError,KeyError) as exception:
         return error(str(exception))
     return jsonify(mode='preview',reference=ticket,cc=str(message['Cc']),subject=str(message['Subject']),body=message.get_body(preferencelist=('plain',)).get_content(),attachments=[{'name':'screenshot-'+str(i+1)+'.png','size':len(item[0])} for i,item in enumerate(images)],message='预览已生成，未发送邮件。')

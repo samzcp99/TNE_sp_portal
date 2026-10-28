@@ -1,3 +1,13 @@
+# Current status: LIVE DELIVERY
+
+Enabled at the user's request on 2026-10-28. Public form uses /api/support/submit and a private durable outbox. To is server-configured; Cc is the student's validated email. No direct Helpdesk delivery. A systemd worker reads SMTP settings using LoadCredential; original credentials remain root-only and are not made readable by the web service.
+
+Payloads are deleted after accepted, failed, partial or unknown outcomes; queued/retry payloads expire at 24 hours. Receipt metadata expires after 7 days. Worker cleanup runs at startup and every five minutes. Temporary known failures retry up to five times. Transmission uncertainty and interrupted sending are not automatically retried. Accepted means SMTP acceptance, not inbox placement.
+
+New task limits: 50 per rolling day overall, 3 per student per 15 minutes, 5 per IP per 15 minutes. Duplicate submission IDs are session-bound and return the existing receipt. Status lookups require the same session and a random receipt token. Browser sessionStorage retains only the token and reference. The former preview endpoint remains available for isolated testing.
+
+Automated tests never send email: test_contacts.py, test_preview.py and test_outbox.py. Historical preview notes below are superseded by this status.
+
 # Student feedback mail delivery - preparation
 
 Public website: https://sp.samzhao.cloud (IP access also retained).

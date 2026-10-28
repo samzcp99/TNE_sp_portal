@@ -1,0 +1,24 @@
+[Unit]
+Description=Student support email outbox worker
+After=network-online.target student-feedback-preview.service
+Wants=network-online.target
+
+[Service]
+User=support-preview
+Group=support-preview
+WorkingDirectory=/opt/student-feedback-preview
+LoadCredential=smtp-config:/etc/student-feedback/config.json
+ExecStart=/usr/bin/python3 /opt/student-feedback-preview/worker.py
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/student-feedback-preview
+MemoryMax=192M
+TasksMax=16
+
+[Install]
+WantedBy=multi-user.target

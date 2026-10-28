@@ -1,3 +1,7 @@
+# Current deployment: live support delivery
+
+The form at https://sp.samzhao.cloud/support/ is enabled for real email delivery. It sends to the privately configured support recipient and copies the student's validated email. See services/feedback/README.md for the private outbox, limits and cleanup. Historical preview release notes below are superseded by this status.
+
 # Learning site
 
 A mobile-oriented learning resource site and private server-side account lookup.

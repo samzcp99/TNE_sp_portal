@@ -1,5 +1,6 @@
 """Synthetic, isolated tests. Never send email or use the student dataset."""
 import io,os,tempfile,unittest
+import uuid
 from unittest.mock import patch
 from PIL import Image,PngImagePlugin
 state=tempfile.TemporaryDirectory()
@@ -54,6 +55,20 @@ class SupportTests(unittest.TestCase):
   data=self.payload(self.challenge());result=self.submit(data)
   self.assertEqual(result.status_code,200)
   self.assertIn('Mobile: +8613800000000',result.get_json()['body'])
+ def test_live_submission_deduplicates_and_binds_receipt(self):
+  app.config['DELIVERY_ENABLED']=True
+  try:
+   data=self.payload(self.challenge());data['submission_id']=str(uuid.uuid4())
+   response=self.client.post('/api/support/submit',data=data,base_url=ORIGIN,headers=self.headers)
+   self.assertEqual(response.status_code,202)
+   first=response.get_json();self.assertEqual(first['mode'],'live');self.assertEqual(first['status'],'queued')
+   duplicate=self.client.post('/api/support/submit',data=data,base_url=ORIGIN,headers=self.headers)
+   self.assertEqual(duplicate.status_code,202);self.assertEqual(duplicate.get_json()['token'],first['token'])
+   status=self.client.get('/api/support/status/'+first['token'],base_url=ORIGIN)
+   self.assertEqual(status.status_code,200)
+   other=app.test_client()
+   self.assertEqual(other.get('/api/support/status/'+first['token'],base_url=ORIGIN).status_code,404)
+  finally:app.config['DELIVERY_ENABLED']=False
  def test_core_details_required_for_every_category(self):
   for index,category in enumerate(['contact_update','mfa','login','password','learning','other']):
    self.headers['X-Real-IP']='198.18.1.'+str(index+10)
