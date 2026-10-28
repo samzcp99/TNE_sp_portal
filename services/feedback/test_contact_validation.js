@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict');
+const path=require('node:path');
+const root=process.argv[2]||path.resolve(__dirname,'../../HUE');
+const contact=require(path.join(root,'js/contact-validation.js'));
+const phones=require(path.join(root,'vendor/libphonenumber-js/libphonenumber-min.js'));
+for(const value of ['16600000000','+86 166 0000 0000','8616600000000','１６６００００００００'])assert.equal(contact.mobile(value,'CN',phones).value,'+8616600000000');
+for(const value of ['1660000000','166000000000','01234567890','12345678901','+64211234567','166ABCDEFGH'])assert.ok(contact.mobile(value,'CN',phones).error);
+assert.equal(contact.mobile('0211234567','NZ',phones).value,'+64211234567');
+assert.equal(contact.mobile('+1 202 555 0123','OTHER',phones).value,'+12025550123');
+assert.ok(contact.mobile('+8616600000000','NZ',phones).error);
+assert.ok(contact.mobile('02112','NZ',phones).error);
+assert.equal(contact.email(' Student+help@EXAMPLE.COM ').value,'Student+help@example.com');
+for(const value of ['student','student@localhost','student @example.com','student@@example.com','.student@example.com','student..name@example.com','student@-example.com','student@example..com','student@example.com\r\nBcc: other@example.com'])assert.ok(contact.email(value).error);
+console.log('PASS front-end contact validation: national lengths, country mismatch, normalization and malformed email cases.');

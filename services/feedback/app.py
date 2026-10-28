@@ -18,6 +18,7 @@ from pathlib import Path
 from flask import Flask, jsonify, request, session
 from PIL import Image, ImageDraw, ImageFont, ImageOps, UnidentifiedImageError
 from mailer import build_email
+from contact_validation import normalize_mobile, normalize_email
 
 STATE = Path(os.environ.get('SUPPORT_STATE', '/var/lib/student-feedback-preview'))
 STATE.mkdir(parents=True, exist_ok=True)
@@ -180,9 +181,9 @@ def preview():
         name = field('name',80,True)
         domestic = field('domestic_id',24,True)
         student_id = field('student_id',32,True)
-        email = field('contact_email',180,True)
+        email = normalize_email(field('contact_email',180,True), field('contact_email_confirm',180,True))
         category = field('category',30,True)
-        mobile = field('mobile',32,True)
+        mobile = normalize_mobile(field('mobile',32,True), field('phone_country',8))
         description = field('description',1500)
         error_text = field('error',500)
         tried = field('tried',500)
@@ -192,8 +193,6 @@ def preview():
             raise ValueError('请检查国内学号和外方学生 ID。')
         if category not in CATEGORIES or form.get('consent')!='yes':
             raise ValueError('请选择问题类型，并阅读勾选信息使用说明。')
-        if mobile and not re.fullmatch(r'\+?[0-9 ()-]{6,32}',mobile):
-            raise ValueError('请填写带国家区号的有效联系电话。')
         datetime.fromisoformat(occurred)
         from zoneinfo import ZoneInfo
         ZoneInfo(zone)

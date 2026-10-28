@@ -11,7 +11,7 @@ def build_email(ticket, *, category, name, student_id, contact_email, mobile='',
     for value in (ticket, category, name, student_id, contact_email, mobile):
         if '\r' in value or '\n' in value:
             raise ValueError('Unexpected newline in a single-line field')
-    if not re.fullmatch(r'[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}', contact_email):
+    if not re.fullmatch(r"[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", contact_email):
         raise ValueError('Invalid contact email')
     if not re.fullmatch(r'[A-Za-z0-9-]{1,32}', ticket):
         raise ValueError('Invalid ticket reference')

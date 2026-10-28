@@ -22,3 +22,4 @@ config.json
 .archive-baseline/
 archives/
 deploy/index.before-portal.html
+services/feedback/vendor/

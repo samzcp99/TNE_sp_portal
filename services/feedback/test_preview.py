@@ -18,7 +18,7 @@ class SupportTests(unittest.TestCase):
   data=response.get_json();self.assertNotIn('answer',data);self.assertTrue(data['image'].startswith('data:image/png;base64,'))
   return data['id']
  def payload(self,identifier):
-  return {'captcha_id':identifier,'captcha':'bbbbb','category':'contact_update','reason':'old_phone','name':'Example Student','domestic_id':'1234567890','student_id':'TEST0001','contact_email':'student@example.com','mobile':'+86 12345678901','occurred_at':'2026-10-28T12:00','timezone':'Asia/Shanghai','consent':'yes'}
+  return {'captcha_id':identifier,'captcha':'bbbbb','category':'contact_update','reason':'old_phone','name':'Example Student','domestic_id':'1234567890','student_id':'TEST0001','contact_email':'student@example.com','contact_email_confirm':'student@example.com','phone_country':'CN','mobile':'13800000000','occurred_at':'2026-10-28T12:00','timezone':'Asia/Shanghai','consent':'yes'}
  def submit(self,data,client=None,headers=None):
   return (client or self.client).post('/api/support/preview',data=data,base_url=ORIGIN,headers=headers or self.headers)
  def test_success_and_replay(self):
@@ -47,6 +47,13 @@ class SupportTests(unittest.TestCase):
  def test_invalid_fields(self):
   data=self.payload(self.challenge());data['consent']='no';self.assertEqual(self.submit(data).status_code,400)
   data=self.payload(self.challenge());data['contact_email']='student@example.com\r\nBcc: other@example.com';self.assertEqual(self.submit(data).status_code,400)
+ def test_contact_validation_at_api(self):
+  for field,value in [('mobile','1660000000'),('contact_email_confirm','different@example.com')]:
+   data=self.payload(self.challenge());data[field]=value
+   self.assertEqual(self.submit(data).status_code,400)
+  data=self.payload(self.challenge());result=self.submit(data)
+  self.assertEqual(result.status_code,200)
+  self.assertIn('Mobile: +8613800000000',result.get_json()['body'])
  def test_core_details_required_for_every_category(self):
   for index,category in enumerate(['contact_update','mfa','login','password','learning','other']):
    self.headers['X-Real-IP']='198.18.1.'+str(index+10)

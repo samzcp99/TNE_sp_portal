@@ -31,3 +31,11 @@ This repository uses a placeholder recipient address. Production recipients are 
 ## Student CC
 
 Normal support messages include the validated student contact email in Cc and Reply-To. Use `delivery_addresses(message)` when sending so that Cc is included in the SMTP envelope; adding only a Cc header does not deliver the copy. The privacy notice explicitly covers the student receiving the same body and screenshots. The preview response shows the Cc address but still never sends mail. Synthetic transport tests explicitly set `cc_student=False` and send only to the configured work recipient, not example.com.
+
+## Contact validation
+
+Mainland China defaults to a separate +86 selector and requires an 11-digit mobile number matching 1[3-9] followed by nine digits. Pasted +86/86 prefixes and spacing are normalized; mail output always includes the country code. Other regions use local libphonenumber-js metadata in the browser and Python phonenumbers 9.0.42 on the server for offline format/length checks. The server-only Python dependency is installed under `/opt/student-feedback-preview/vendor`; install that version with `python3 -m pip install --target /opt/student-feedback-preview/vendor phonenumbers==9.0.42` when provisioning. Nothing is sent to a third-party phone validation API.
+
+Private email must have valid syntax and a matching confirmation entry. Domain case and surrounding whitespace are normalized; local-part case is preserved. Syntax and numbering metadata checks do not establish ownership, delivery, or whether a phone is active. No OTP emails or SMS messages are sent by these checks.
+
+Tests: `python3 test_contacts.py`, `python3 test_preview.py`, and `node test_contact_validation.js /path/to/HUE`.
